@@ -1,0 +1,6 @@
+.Rapp.history
+.Rbuildignore
+.Rproj.user/*
+.Rproj.user
+*.o
+*.so

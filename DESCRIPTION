@@ -1,0 +1,14 @@
+Package: ecofoliosim
+Title: Simulations of community dynamics for portfolio optimization
+Version: 0.0.99
+Authors@R: c(person(c("Sean", "C."), "Anderson",
+    email = "sean@seananderson.ca", role = c("aut", "cre")))
+Description: Simulate from community dynamics to explore caveats and solutions
+    to optimizing ecological portfolios
+Depends:
+    R (>= 3.1.1)
+Imports:
+    metafolio
+License: GPL-3
+LinkingTo: Rcpp
+LazyData: true
