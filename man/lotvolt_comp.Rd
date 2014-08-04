@@ -4,7 +4,7 @@
 \title{Run Lotka-Voltera comparison simulation}
 \usage{
 lotvolt_comp(w1, b, obs_errors = 0, u_d, u_e, burnin = 100,
-  sample_scale = 1L, sigma_e = 0.03)
+  sample_scale = 1L, sigma_e = 0.03, return_ts = FALSE)
 }
 \arguments{
 \item{w1}{Weight for species 1}
@@ -25,6 +25,9 @@ observations are kept. If set to 2, for example, then every second
 observation is discarded.}
 
 \item{sigma_e}{Environmental standard deviation values to pass on.}
+
+\item{return_ts}{Logical: should the time series of species biomasses be
+returned or the mean-variance statistics?}
 }
 \description{
 A wrapper function to facilitate running simulations for two species.

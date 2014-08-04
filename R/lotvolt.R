@@ -90,9 +90,11 @@ lotvolt <- function(rm, k, b, n0, sigma_d, sigma_e, u_d, u_e) {
 #' observations are kept. If set to 2, for example, then every second
 #' observation is discarded.
 #' @param sigma_e Environmental standard deviation values to pass on.
+#' @param return_ts Logical: should the time series of species biomasses be
+#' returned or the mean-variance statistics?
 #'
 #' @export
-lotvolt_comp <- function(w1, b, obs_errors = 0, u_d, u_e, burnin = 100, sample_scale = 1L, sigma_e = 0.03) {
+lotvolt_comp <- function(w1, b, obs_errors = 0, u_d, u_e, burnin = 100, sample_scale = 1L, sigma_e = 0.03, return_ts = FALSE) {
   w2 <- 1 - w1
   out <- data.frame(w1 = w1, m = NA, v = NA)
   for(i in seq_along(w1)) {
@@ -112,7 +114,11 @@ lotvolt_comp <- function(w1, b, obs_errors = 0, u_d, u_e, burnin = 100, sample_s
     out$m[i] <- mean(ret)
     out$v[i] <- sd(ret)
   }
-  return(na.omit(out))
+  if(return_ts) {
+    return(m)
+  } else {
+    return(na.omit(out))
+  }
 }
 
 #' Run Lotka-Voltera comparison simulation for many species
@@ -173,11 +179,14 @@ lotvolt_sp <- function(n_sim, b, obs_errors = 0, u_d, u_e,
 #' @param ylim Possible y limits
 #' @param show Vector of portfolios to show
 #' @param colour_lines Should the lines be coloured?
+#' @param col A vector of colours for the lines.
+#' @param add Should lines be added to an existing plot?
+#' @param lwd Line width
 #' @param ... Any extra arguments to pass to \code{plot.default}.
 #'
 #' @export
 plot_frontiers <- function(dat, xlim = NULL, ylim = NULL, show = seq_along(dat),
-  colour_lines = FALSE, ...) {
+  colour_lines = FALSE, col = NULL, add = FALSE, lwd = 3, ...) {
   if(is.null(xlim)) {
     xlim <- c(min(unlist(lapply(dat, function(x) min(x$v)))),
     max(unlist(lapply(dat, function(x) max(x$v)))))
@@ -186,8 +195,10 @@ plot_frontiers <- function(dat, xlim = NULL, ylim = NULL, show = seq_along(dat),
     ylim <- c(min(unlist(lapply(dat, function(x) min(x$m)))),
     max(unlist(lapply(dat, function(x) max(x$m)))))
   }
-  plot(1, 1, xlim = xlim, ylim = ylim, type = "n", xlab = "Standard devation",
-    ylab = "Mean", ...)
+  if(!add) {
+    plot(1, 1, xlim = xlim, ylim = ylim, type = "n", xlab = "Standard devation",
+      ylab = "Mean", ...)
+  }
   if(is.character(show)) {
     if(show == "all") {
       to_show <- seq_along(dat)
@@ -195,9 +206,9 @@ plot_frontiers <- function(dat, xlim = NULL, ylim = NULL, show = seq_along(dat),
   }
   for(i in show) {
     if(colour_lines) {
-      lines(dat[[i]]$v, dat[[i]]$m, lwd = 2, col = i)
+      lines(dat[[i]]$v, dat[[i]]$m, lwd = lwd, col = col[i])
     } else {
-      lines(dat[[i]]$v, dat[[i]]$m, col = "#00000040", lwd = 3)
+      lines(dat[[i]]$v, dat[[i]]$m, col = "#00000040", lwd = lwd)
     }
   }
   invisible(list(xlim = xlim, ylim = ylim))

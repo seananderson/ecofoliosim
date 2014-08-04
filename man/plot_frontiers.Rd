@@ -4,7 +4,7 @@
 \title{Plot efficient frontiers}
 \usage{
 plot_frontiers(dat, xlim = NULL, ylim = NULL, show = seq_along(dat),
-  colour_lines = FALSE, ...)
+  colour_lines = FALSE, col = NULL, add = FALSE, lwd = 3, ...)
 }
 \arguments{
 \item{dat}{A list of data frames containing columsn for variability (\code{v})
@@ -17,6 +17,12 @@ and mean (\code{m}).}
 \item{show}{Vector of portfolios to show}
 
 \item{colour_lines}{Should the lines be coloured?}
+
+\item{col}{A vector of colours for the lines.}
+
+\item{add}{Should lines be added to an existing plot?}
+
+\item{lwd}{Line width}
 
 \item{...}{Any extra arguments to pass to \code{plot.default}.}
 }
